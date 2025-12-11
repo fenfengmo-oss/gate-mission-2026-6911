@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gate.io | The Gateway to Your Future</title>
+    <style>
+        /* --- 视觉系统定义 --- */
+        :root {
+            --bg-deep: #050505;
+            --bg-card: #121212;
+            --brand-blue: #0d57ff;
+            --brand-cyan: #00f0ff;
+            --brand-gold: #ffd700;
+            --text-main: #ffffff;
+            --text-sub: #a0a0a0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            padding-bottom: 100px;
+            overflow-x: hidden;
+        }
+
+        /* 动效 */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(13, 87, 255, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(13, 87, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(13, 87, 255, 0); }
+        }
+
+        .animate { animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
+        .d-1 { animation-delay: 0.1s; }
+        .d-2 { animation-delay: 0.3s; }
+        .d-3 { animation-delay: 0.5s; }
+
+        /* 顶部 Hero */
+        .hero {
+            padding: 60px 24px 40px;
+            background: radial-gradient(circle at 100% 0%, #1a237e 0%, var(--bg-deep) 60%);
+            position: relative;
+        }
+        .hero::after {
+            content: "GATE";
+            position: absolute;
+            top: -10px; right: -20px;
+            font-size: 120px;
+            font-weight: 900;
+            color: rgba(255,255,255,0.03);
+            z-index: -1;
+        }
+
+        .tag-pill {
+            display: inline-block;
+            background: rgba(13, 87, 255, 0.2);
+            color: var(--brand-cyan);
+            border: 1px solid rgba(13, 87, 255, 0.4);
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .title-main { font-size: 36px; font-weight: 800; line-height: 1.1; margin-bottom: 16px; }
+        .title-highlight {
+            background: linear-gradient(90deg, #fff, var(--brand-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .desc-main { color: var(--text-sub); font-size: 15px; line-height: 1.6; max-width: 90%; }
+
+        /* 数据栏 */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 24px;
+            margin-bottom: 40px;
+        }
+        .stat-box { text-align: left; }
+        .stat-num { font-size: 20px; font-weight: 800; color: white; display: block; }
+        .stat-label { font-size: 10px; color: var(--text-sub); text-transform: uppercase; margin-top: 4px; display: block; }
+
+        /* 核心卡片容器 */
+        .section-header { padding: 0 24px; font-size: 18px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; }
+        .section-header::before { content: ""; width: 4px; height: 18px; background: var(--brand-blue); margin-right: 10px; border-radius: 2px; }
+
+        .card {
+            background: var(--bg-card);
+            margin: 0 24px 20px;
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid #222;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .card:active { transform: scale(0.98); }
+        
+        /* 装饰线 */
+        .card.blue { border-top: 3px solid var(--brand-blue); }
+        .card.cyan { border-top: 3px solid var(--brand-cyan); }
+        .card.gold { border-top: 3px solid var(--brand-gold); }
+
+        .card-icon { font-size: 24px; margin-bottom: 15px; }
+        .big-data { font-size: 32px; font-weight: 800; color: white; font-family: 'Arial Narrow', sans-serif; margin-bottom: 8px; }
+        .big-data span { font-size: 14px; font-weight: normal; color: var(--text-sub); margin-left: 5px; }
+        
+        .card-title { font-size: 18px; font-weight: 700; color: white; margin-bottom: 8px; }
+        .card-text { font-size: 14px; color: var(--text-sub); line-height: 1.5; margin-bottom: 15px; }
+
+        .feature-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag { font-size: 11px; color: #ccc; background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 4px; }
+
+        /* 合作伙伴 */
+        .partner-area {
+            margin-top: 40px;
+            padding: 30px 24px;
+            background: linear-gradient(180deg, var(--bg-deep), #0b0b0b);
+            text-align: center;
+            border-top: 1px solid #111;
+        }
+        .partner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .p-box { background: #151515; padding: 15px; border-radius: 10px; border: 1px solid #222; }
+        
+        /* 底部 CTA */
+        .float-bar {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%;
+            background: rgba(5,5,5,0.9);
+            backdrop-filter: blur(10px);
+            padding: 20px 24px;
+            border-top: 1px solid #222;
+            display: flex;
+            justify-content: center;
+        }
+        .cta-btn {
+            width: 100%; max-width: 480px;
+            background: var(--brand-blue);
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            padding: 16px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero 区域 -->
+    <div class="hero animate">
+        <span class="tag-pill">2026 全球人才计划</span>
+        <h1 class="title-main">推开这扇门，<br><span class="title-highlight">世界即是主场</span></h1>
+        <p class="desc-main">
+            在 Gate.io，我们不定义你的边界。加入全球 Top3 平台，与 F1 速度同行，在 Web3 的浪潮中构建未来。
+        </p>
+    </div>
+
+    <!-- 数据背书 -->
+    <div class="stats-bar animate d-1">
+        <div class="stat-box">
+            <span class="stat-num">Top 3</span>
+            <span class="stat-label">全球排名</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-num">120亿+</span>
+            <span class="stat-label">储备金($)</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-num">12年</span>
+            <span class="stat-label">安全运营</span>
+        </div>
+    </div>
+
+    <div class="section-header animate d-1">核心人才礼遇</div>
+
+    <!-- 卡片 1: 团建 (已更新文案) -->
+    <div class="card cyan animate d-2">
+        <div class="card-icon">✈️</div>
+        <div class="big-data">800 USDT<span>/人/年</span></div>
+        <h3 class="card-title">纵贯全球，皆为主场</h3>
+        <p class="card-text">
+            从东京的霓虹到巴厘岛的海风，团建不再是枯燥的流程。我们给予团队 100% 的定义权，预算升级，<strong>带薪畅游</strong>，让足迹成为最酷的勋章。
+        </p>
+        <div class="feature-tags">
+            <span class="tag">自主策划</span>
+            <span class="tag">全球探索</span>
+            <span class="tag">极速报销</span>
+        </div>
+    </div>
+
+    <!-- 卡片 2: 津贴 -->
+    <div class="card blue animate d-2">
+        <div class="card-icon">🎁</div>
+        <div class="big-data">600 USDT<span>/人/年</span></div>
+        <h3 class="card-title">全景关怀，滴灌生活</h3>
+        <p class="card-text">
+            真正的关怀是润物细无声。涵盖你的健身计划、年度体检、技术充电，以及每一个值得庆祝的生日与人生时刻。
+        </p>
+        <div class="feature-tags">
+            <span class="tag">健康支持</span>
+            <span class="tag">日常补给</span>
+            <span class="tag">幸福礼金</span>
+        </div>
+    </div>
+
+    <!-- 卡片 3: 激励 -->
+    <div class="card gold animate d-3">
+        <div class="card-icon">💎</div>
+        <h3 class="card-title">成果回响，绝不迟到</h3>
+        <p class="card-text">
+            拒绝“画饼”与“熬年头”。我们实行 <b>Dynamic Pay</b> 动态激励体系，Spot Bonus 即时到账，让每一份卓越产出都掷地有声。
+        </p>
+        <div class="feature-tags">
+            <span class="tag">即时表彰</span>
+            <span class="tag">绩优调薪</span>
+            <span class="tag">长期红利</span>
+        </div>
+    </div>
+
+    <!-- 合作伙伴 -->
+    <div class="partner-area animate d-3">
+        <div style="font-size:12px; color:#666; letter-spacing:2px; margin-bottom:10px;">PREMIUM PARTNERS</div>
+        <h3 style="color:white; font-size:22px; margin-bottom:5px;">与冠军并肩</h3>
+        <p style="font-size:13px; color:#888;">工作之外，享受顶级赛事的激情</p>
+        
+        <div class="partner-grid">
+            <div class="p-box" style="border-bottom: 2px solid #0068ff;">
+                <div style="font-size:24px;">⚽️</div>
+                <div style="font-weight:bold; color:white; margin-top:5px;">Inter Milan</div>
+                <div style="font-size:10px; color:#666;">官方袖标赞助商</div>
+            </div>
+            <div class="p-box" style="border-bottom: 2px solid #ff4444;">
+                <div style="font-size:24px;">🏎️</div>
+                <div style="font-weight:bold; color:white; margin-top:5px;">Red Bull F1</div>
+                <div style="font-size:10px; color:#666;">车队官方合作伙伴</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部按钮 -->
+    <div class="float-bar">
+        <a href="https://www.gate.io/careers" class="cta-btn">查看热招职位 & 加入我们</a>
+    </div>
+
+</body>
+</html>

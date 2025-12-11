@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gate.io 2026 焕新福利 | 未来邀请函</title>
+    <style>
+        /* 全局重置与字体 */
+        :root {
+            --brand-blue: #0d57ff;
+            --brand-dark: #0b1e3b;
+            --accent-gold: #d4af37;
+            --bg-color: #f4f6f9;
+            --card-shadow: 0 8px 24px rgba(13, 87, 255, 0.08);
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            max-width: 480px; /* 限制为手机H5宽度，桌面端居中显示 */
+            margin: 0 auto;
+            background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop'); /* 科技感背景 */
+            background-size: cover;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        /* 容器遮罩 */
+        .app-container {
+            background: rgba(255, 255, 255, 0.95);
+            min-height: 100vh;
+            box-shadow: 0 0 50px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 顶部 Header */
+        header {
+            background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand-blue) 100%);
+            color: white;
+            padding: 40px 20px 60px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            top: -50px; right: -50px;
+            width: 150px; height: 150px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .logo { font-weight: 900; font-size: 24px; letter-spacing: 1px; margin-bottom: 20px; display: block;}
+        .headline { font-size: 28px; font-weight: 800; line-height: 1.2; margin-bottom: 10px; }
+        .sub-headline { font-size: 14px; opacity: 0.9; font-weight: 300; }
+
+        /* 内容区域 */
+        .content {
+            padding: 0 20px;
+            margin-top: -40px; /* 卡片上浮效果 */
+        }
+
+        /* 卡片通用样式 */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            transition: transform 0.2s;
+        }
+        .card:hover { transform: translateY(-3px); }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--brand-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title::before {
+            content: "";
+            width: 4px; height: 18px;
+            background: var(--brand-blue);
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        /* 亮点数据大字 */
+        .highlight-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--brand-blue);
+            font-family: "DIN Alternate", "Arial Narrow", sans-serif;
+        }
+        .highlight-unit { font-size: 14px; color: #666; font-weight: normal; }
+
+        /* 列表项 */
+        .benefit-item {
+            display: flex;
+            margin-bottom: 12px;
+            align-items: flex-start;
+        }
+        .benefit-icon {
+            min-width: 24px;
+            height: 24px;
+            background: #eef4ff;
+            color: var(--brand-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+        .benefit-text strong { display: block; color: #333; font-size: 15px;}
+        .benefit-text span { font-size: 13px; color: #777; display: block; margin-top: 2px;}
+
+        /* 标签 */
+        .tag {
+            background: #fff8e1;
+            color: #bcaaa4;
+            color: #856404;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        /* 底部 */
+        .footer {
+            text-align: center;
+            padding: 30px 20px 50px;
+            color: #888;
+            font-size: 12px;
+        }
+        
+        .cta-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: var(--brand-blue);
+            color: white;
+            text-align: center;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            text-decoration: none;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px rgba(13, 87, 255, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .lucky-draw {
+            background: linear-gradient(90deg, #ffefba 0%, #ffffff 100%);
+            border: 1px solid #ffeebb;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #856404;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <span class="logo">Gate.io</span>
+            <h1 class="headline">2026 福利体系<br>全面焕新发布</h1>
+            <p class="sub-headline">To: 每一位未来的并肩同行者<br>我们用真金白银，回应你的才华。</p>
+        </header>
+
+        <div class="content">
+            <!-- 核心卡片 1: 现金与回报 -->
+            <div class="card">
+                <div class="tag">💰 薪酬与激励</div>
+                <div class="section-title">成果可见，回响及时</div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">1</div>
+                    <div class="benefit-text">
+                        <strong>绩优调薪 & 快速通道</strong>
+                        <span>拒绝“熬年头”。名额动态调配，卓越产出即时兑现，能力决定薪资。</span>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">2</div>
+                    <div class="benefit-text">
+                        <strong>中长期 GT 激励池</strong>
+                        <span>不只是一份奖励，更是一份契约。与行业 Top 平台的增长红利深度绑定。</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 核心卡片 2: 全景关怀 -->
+            <div class="card">
+                <div class="tag">🎁 600U 全景关怀</div>
+                <div class="section-title">精准滴灌生活的每一度</div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 20px; text-align: center;">
+                    <div>
+                        <div class="highlight-number">200<span class="highlight-unit">U</span></div>
+                        <div style="font-size:12px; color:#666">成长与健康</div>
+                    </div>
+                    <div>
+                        <div class="highlight-number">200<span class="highlight-unit">U</span></div>
+                        <div style="font-size:12px; color:#666">日常补给</div>
+                    </div>
+                    <div>
+                        <div class="highlight-number">200<span class="highlight-unit">U</span></div>
+                        <div style="font-size:12px; color:#666">人生时刻</div>
+                    </div>
+                </div>
+                <div class="benefit-text" style="font-size:13px; color:#555; background:#f9f9f9; padding:10px; border-radius:8px;">
+                    覆盖：健身、体检、通勤、餐饮、生日礼金及婚育“幸福礼金”。
+                </div>
+            </div>
+
+            <!-- 核心卡片 3: 团建升级 -->
+            <div class="card">
+                <div class="tag">✈️ 团建体验迭代</div>
+                <div class="section-title">更有趣，更自由，更豪华</div>
+                <div style="text-align: center; margin: 20px 0;">
+                    <div style="font-size:14px; color:#666;">人均预算升级至</div>
+                    <div class="highlight-number" style="color: #ff5722;">800<span class="highlight-unit"> U / 人 / 年</span></div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">✓</div>
+                    <div class="benefit-text">
+                        <strong>自主策划，拒绝尬聊</strong>
+                        <span>去哪里、玩什么，团队自己说了算。</span>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">✓</div>
+                    <div class="benefit-text">
+                        <strong>合理时长，兼顾周末</strong>
+                        <span>支持最长3天活动，让你真正放下工作去放松。</span>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">✓</div>
+                    <div class="benefit-text">
+                        <strong>先垫付，后极速报销</strong>
+                        <span>或申请预支，流程丝滑，专注于快乐本身。</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 核心卡片 4: 坚实后盾 -->
+            <div class="card">
+                <div class="tag">🛡️ 人文关怀基金</div>
+                <div class="section-title">做你最坚实的后盾</div>
+                <p style="font-size: 14px; color: #555;">
+                    当不可抗力（重大灾害、突发疾病等）降临，Gate 启动快速响应机制。
+                    <br><br>
+                    <strong>定点解决，严格保密。</strong> 我们不只是同事，更是并在风雨中的战友。
+                </p>
+            </div>
+
+            <!-- 互动与结尾 -->
+            <div class="lucky-draw">
+                🎉 <strong>锦鲤互动：</strong>
+                <br>分享你对Gate福利的期待，抽取 5 位伙伴送出 <span style="color:#d9534f; font-weight:bold;">Gate x Red Bull 联名限定背包</span>！
+            </div>
+
+            <a href="#" class="cta-btn">加入 Gate.io，共赴山海 🚀</a>
+
+            <div class="footer">
+                <p>Global HR Team | 2026 Welfare Policy</p>
+                <p style="margin-top:10px; opacity: 0.6;">*本政策自2026年1月1日起生效</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

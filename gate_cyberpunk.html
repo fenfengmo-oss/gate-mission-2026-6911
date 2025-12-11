@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gate.io | Enter The Grid</title>
+    <style>
+        /* --- 1. 赛博配色系统 --- */
+        :root {
+            --bg-color: #050505;
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bc13fe;
+            --neon-green: #0aff00;
+            --card-bg: rgba(10, 10, 16, 0.8);
+            --border-color: rgba(0, 243, 255, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Courier New', Courier, monospace; }
+
+        body {
+            background-color: var(--bg-color);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif; /* 正文还是用无衬线体易读 */
+        }
+
+        /* --- 2. 动态 3D 网格背景 (The Grid) --- */
+        .cyber-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: 
+                linear-gradient(transparent 0%, rgba(0, 243, 255, 0.1) 2%, transparent 3%),
+                linear-gradient(90deg, transparent 0%, rgba(188, 19, 254, 0.1) 2%, transparent 3%);
+            background-size: 50px 50px;
+            transform: perspective(500px) rotateX(60deg) translateY(-100px) scale(2);
+            animation: gridMove 10s linear infinite;
+            opacity: 0.4;
+        }
+
+        .cyber-glow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at 50% 0%, rgba(0, 243, 255, 0.15), transparent 70%);
+        }
+
+        @keyframes gridMove { from { background-position: 0 0; } to { background-position: 0 50px; } }
+
+        /* --- 3. 容器 --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- 4. Hero 区域 (终端风格) --- */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .terminal-badge {
+            display: inline-block;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 5px 15px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 10px rgba(10, 255, 0, 0.2);
+        }
+
+        .glitch-title {
+            font-size: clamp(40px, 6vw, 80px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            position: relative;
+            color: white;
+            text-shadow: 2px 2px var(--neon-purple), -2px -2px var(--neon-cyan);
+            font-family: 'Arial Black', sans-serif;
+            letter-spacing: -2px;
+        }
+
+        .hero-desc {
+            font-family: 'Courier New', monospace;
+            color: #aaa;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* --- 5. 数据 HUD (抬头显示器风格) --- */
+        .hud-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 80px;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+            background: rgba(0, 243, 255, 0.02);
+        }
+
+        .hud-item { text-align: center; position: relative; }
+        .hud-item:not(:last-child)::after {
+            content: ""; position: absolute; right: 0; top: 20%; height: 60%; width: 1px;
+            background: var(--border-color);
+        }
+        
+        .hud-val { font-size: 24px; font-weight: 700; color: var(--neon-cyan); text-shadow: 0 0 8px var(--neon-cyan); font-family: 'Courier New', monospace; }
+        .hud-lbl { font-size: 10px; color: #888; text-transform: uppercase; margin-top: 5px; letter-spacing: 1px; }
+
+        /* --- 6. 赛博卡片 (带故障动效) --- */
+        .section-header { text-align: center; margin-bottom: 40px; }
+        .section-title { font-size: 28px; font-weight: 700; text-transform: uppercase; letter-spacing: 4px; border-bottom: 2px solid var(--neon-purple); display: inline-block; padding-bottom: 10px; }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .cyber-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            position: relative;
+            transition: 0.3s;
+            overflow: hidden;
+            /* 切角效果 */
+            clip-path: polygon(
+                20px 0, 100% 0, 
+                100% calc(100% - 20px), calc(100% - 20px) 100%, 
+                0 100%, 0 20px
+            );
+        }
+
+        .cyber-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            border-color: var(--neon-cyan);
+        }
+
+        /* 装饰角标 */
+        .corner {
+            position: absolute; width: 10px; height: 10px;
+            border: 2px solid var(--neon-cyan);
+            transition: 0.3s;
+        }
+        .tr { top: 0; right: 0; border-bottom: none; border-left: none; }
+        .bl { bottom: 0; left: 0; border-top: none; border-right: none; }
+        .cyber-card:hover .corner { width: 100%; height: 100%; opacity: 0.1; }
+
+        /* 内容布局 (Icon + Number) */
+        .card-row {
+            display: flex; align-items: center; gap: 15px; margin-bottom: 20px;
+        }
+        .c-icon { font-size: 40px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
+        
+        .c-num { 
+            font-size: 36px; font-weight: 700; color: white; 
+            font-family: 'Arial', sans-serif;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+        .c-num span { font-size: 14px; color: var(--neon-cyan); font-weight: 400; margin-left: 5px; }
+
+        .c-h3 { font-size: 20px; color: var(--neon-cyan); margin-bottom: 10px; font-weight: bold; }
+        .c-p { font-size: 14px; color: #bbb; line-height: 1.6; margin-bottom: 15px; font-family: sans-serif; }
+
+        .code-tags { font-family: 'Courier New', monospace; font-size: 11px; color: var(--neon-green); }
+
+        /* --- 7. 合作伙伴 & CTA --- */
+        .partners {
+            margin-top: 80px;
+            border: 1px dashed #333;
+            padding: 40px;
+            text-align: center;
+            background: rgba(0,0,0,0.5);
+        }
+        .p-logos { display: flex; justify-content: center; gap: 40px; margin-top: 20px; }
+        .p-item { opacity: 0.7; transition: 0.3s; }
+        .p-item:hover { opacity: 1; text-shadow: 0 0 10px var(--neon-purple); }
+
+        .cta-box { text-align: center; margin: 80px 0; }
+        .cyber-btn {
+            display: inline-block;
+            background: transparent;
+            color: var(--neon-cyan);
+            font-family: 'Courier New', monospace;
+            font-weight: 900;
+            font-size: 18px;
+            padding: 15px 40px;
+            border: 2px solid var(--neon-cyan);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+        }
+        .cyber-btn:hover {
+            background: var(--neon-cyan);
+            color: black;
+            box-shadow: 0 0 30px var(--neon-cyan);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="cyber-grid"></div>
+    <div class="cyber-glow"></div>
+
+    <div class="container">
+        
+        <!-- Hero -->
+        <div class="hero">
+            <div class="terminal-badge">> SYSTEM_READY</div>
+            <h1 class="glitch-title">GATEWAY<br>TO WEB3</h1>
+            <p class="hero-desc">
+                // 初始化连接...<br>
+                // 目标: 全球 Top3 交易平台<br>
+                // 状态: 招募核心节点构建者
+            </p>
+        </div>
+
+        <!-- HUD Stats -->
+        <div class="hud-grid">
+            <div class="hud-item">
+                <div class="hud-val">TOP 3</div>
+                <div class="hud-lbl">Global Rank</div>
+            </div>
+            <div class="hud-item">
+                <div class="hud-val">$12B+</div>
+                <div class="hud-lbl">Reserve</div>
+            </div>
+            <div class="hud-item">
+                <div class="hud-val">12 YRS</div>
+                <div class="hud-lbl">Uptime</div>
+            </div>
+        </div>
+
+        <!-- Cyber Cards -->
+        <div class="section-header">
+            <h2 class="section-title">Core_Benefits_v2.0</h2>
+        </div>
+
+        <div class="cards-grid">
+            <!-- Card 1 -->
+            <div class="cyber-card">
+                <div class="corner tr"></div>
+                <div class="corner bl"></div>
+                <div class="card-row">
+                    <div class="c-icon">✈️</div>
+                    <div class="c-num">800 U<span>/ YR</span></div>
+                </div>
+                <h3 class="c-h3">Global_Roam.exe</h3>
+                <p class="c-p">带薪畅游，世界主场。团建拥有 100% 自主权，去东京、去巴厘岛，预算拉满。</p>
+                <div class="code-tags">[ 全球探索 ] [ 自主策划 ]</div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="cyber-card">
+                <div class="corner tr"></div>
+                <div class="corner bl"></div>
+                <div class="card-row">
+                    <div class="c-icon">🎁</div>
+                    <div class="c-num">600 U<span>/ YR</span></div>
+                </div>
+                <h3 class="c-h3">Life_Support_Pack</h3>
+                <p class="c-p">全景关怀，滴灌生活。健身、体检、通勤、生日礼金，全方位覆盖。</p>
+                <div class="code-tags">[ 健康 ] [ 补给 ] [ 幸福 ]</div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="cyber-card" style="border-color: var(--neon-purple);">
+                <div class="corner tr" style="border-color: var(--neon-purple);"></div>
+                <div class="corner bl" style="border-color: var(--neon-purple);"></div>
+                <div class="card-row">
+                    <div class="c-icon">💎</div>
+                    <div class="c-num" style="font-size: 32px;">Dynamic Pay</div>
+                </div>
+                <h3 class="c-h3" style="color: var(--neon-purple);">Incentive_Protocol</h3>
+                <p class="c-p">成果回响，绝不迟到。Spot Bonus 即时激励，拒绝画饼。</p>
+                <div class="code-tags">[ 即时表彰 ] [ 长期激励 ]</div>
+            </div>
+        </div>
+
+        <!-- Partners -->
+        <div class="partners">
+            <p style="color: var(--neon-green); font-size: 12px; letter-spacing: 2px; margin-bottom: 20px;">>> ELITE_ALLIANCES <<</p>
+            <div class="p-logos">
+                <div class="p-item">
+                    <div style="font-size: 40px;">⚽️</div>
+                    <div style="font-weight:bold; margin-top:5px;">INTER MILAN</div>
+                </div>
+                <div class="p-item">
+                    <div style="font-size: 40px;">🏎️</div>
+                    <div style="font-weight:bold; margin-top:5px;">RED BULL F1</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-box">
+            <a href="https://www.gate.io/careers" class="cyber-btn">INITIATE_APPLICATION ></a>
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,349 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gate.io | Design Your Career</title>
+    <style>
+        /* --- 1. 全局定义 (Light Theme) --- */
+        :root {
+            --text-main: #1a1a1a;
+            --text-sub: #555;
+            --brand-blue: #2563eb;
+            --brand-cyan: #06b6d4;
+            --glass-white: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.8);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+        body {
+            background-color: #f3f4f6;
+            color: var(--text-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- 2. 动态流体背景 (CSS Animation) --- */
+        .liquid-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            opacity: 0.15; /* 保持背景淡雅 */
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 漂浮的圆 (增加层次感) */
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.6;
+            animation: floatBlob 10s infinite alternate;
+        }
+        .b1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #a5f3fc; border-radius: 40% 60% 70% 30%; }
+        .b2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: #e0e7ff; border-radius: 60% 40% 30% 70%; animation-delay: -5s; }
+
+        @keyframes floatBlob { from { transform: translate(0, 0) rotate(0deg); } to { transform: translate(30px, 50px) rotate(10deg); } }
+
+        /* --- 3. 容器 --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+        }
+
+        /* --- 4. Hero 区域 (极简大气) --- */
+        .hero-section {
+            padding: 100px 0 60px;
+            text-align: center;
+        }
+
+        .brand-badge {
+            display: inline-block;
+            background: white;
+            color: var(--brand-blue);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 13px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 24px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .hero-title {
+            font-size: clamp(48px, 6vw, 80px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            color: #111;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease 0.2s backwards;
+        }
+        
+        .hero-title span {
+            background: linear-gradient(90deg, var(--brand-blue), var(--brand-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 18px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto 50px;
+            line-height: 1.6;
+            animation: fadeInUp 0.8s ease 0.4s backwards;
+        }
+
+        /* --- 5. 数据卡片 (透明浮雕感) --- */
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 80px;
+            animation: fadeInUp 0.8s ease 0.6s backwards;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.4);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.6);
+            text-align: center;
+            min-width: 140px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+        
+        .stat-val { font-size: 24px; font-weight: 800; color: #111; display: block; }
+        .stat-label { font-size: 12px; color: #666; font-weight: 600; text-transform: uppercase; margin-top: 4px; }
+
+        /* --- 6. 核心福利 (Modern Cards) --- */
+        .section-header { text-align: center; margin-bottom: 40px; }
+        .section-title { font-size: 32px; font-weight: 800; color: #111; letter-spacing: -1px; }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .clean-card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05); /* 柔和的高投影 */
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .clean-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(37, 99, 235, 0.15); /* 悬浮时的蓝光投影 */
+        }
+
+        /* 布局核心：Icon + Number */
+        .card-top {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .icon-box {
+            width: 56px; height: 56px;
+            background: #eff6ff;
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px;
+            color: var(--brand-blue);
+        }
+        
+        /* 颜色变体 */
+        .c-blue .icon-box { background: #eff6ff; color: #2563eb; }
+        .c-cyan .icon-box { background: #ecfeff; color: #06b6d4; }
+        .c-purple .icon-box { background: #f5f3ff; color: #7c3aed; }
+
+        .big-number {
+            font-size: 36px;
+            font-weight: 800;
+            color: #111;
+            letter-spacing: -1px;
+            font-family: 'Inter', sans-serif;
+            line-height: 1;
+        }
+        .big-number span { font-size: 16px; color: #999; font-weight: 500; margin-left: 4px; }
+
+        .card-h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; color: #111; }
+        .card-p { font-size: 15px; color: #666; line-height: 1.6; margin-bottom: 20px; }
+
+        .pill-group { display: flex; flex-wrap: wrap; gap: 8px; }
+        .pill { 
+            font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 8px; 
+            background: #f3f4f6; color: #555;
+        }
+
+        /* --- 7. 合作伙伴 & 底部 --- */
+        .partner-bar {
+            margin-top: 80px;
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+        .logos { display: flex; justify-content: center; gap: 50px; margin-top: 20px; flex-wrap: wrap; }
+        .logo-item { opacity: 0.6; transition: 0.3s; text-align: center; }
+        .logo-item:hover { opacity: 1; transform: scale(1.05); }
+        .l-icon { font-size: 40px; display: block; margin-bottom: 5px; }
+        .l-text { font-weight: 800; font-size: 14px; color: #111; }
+
+        .cta-container { text-align: center; margin: 80px 0; }
+        .primary-btn {
+            display: inline-block;
+            background: #111;
+            color: white;
+            padding: 20px 50px;
+            border-radius: 100px;
+            font-size: 18px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            background: #000;
+        }
+
+        /* 动画 */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+    <!-- 动态背景 -->
+    <div class="liquid-bg"></div>
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+
+    <div class="container">
+        
+        <!-- Hero -->
+        <div class="hero-section">
+            <span class="brand-badge">🚀 GATE.IO CAREERS 2026</span>
+            <h1 class="hero-title">
+                Gateway to<br><span>Your Best Work.</span>
+            </h1>
+            <p class="hero-desc">
+                加入全球 Top3 交易平台。我们在寻找那些不安于现状、渴望在 Web3 浪潮中留下印记的创造者。
+            </p>
+            
+            <!-- 数据行 -->
+            <div class="stats-row">
+                <div class="stat-item">
+                    <span class="stat-val">Top 3</span>
+                    <span class="stat-label">Global Rank</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-val">$12B+</span>
+                    <span class="stat-label">Reserve</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-val">2000+</span>
+                    <span class="stat-label">Team</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 福利卡片 -->
+        <div class="section-header">
+            <h2 class="section-title">人才礼遇 · 顶格配置</h2>
+        </div>
+
+        <div class="cards-grid">
+            <!-- 卡片 1 (Blue) -->
+            <div class="clean-card c-blue">
+                <div class="card-top">
+                    <div class="icon-box">✈️</div>
+                    <div class="big-number">800 U<span>/年</span></div>
+                </div>
+                <h3 class="card-h3">带薪畅游 · 世界主场</h3>
+                <p class="card-p">团建由你定义。去东京滑雪，去巴厘岛冲浪。我们将预算直接拉满，让足迹成为你的勋章。</p>
+                <div class="pill-group">
+                    <span class="pill">全球探索</span>
+                    <span class="pill">自主策划</span>
+                </div>
+            </div>
+
+            <!-- 卡片 2 (Cyan) -->
+            <div class="clean-card c-cyan">
+                <div class="card-top">
+                    <div class="icon-box">🎁</div>
+                    <div class="big-number">600 U<span>/年</span></div>
+                </div>
+                <h3 class="card-h3">全景关怀 · 滴灌生活</h3>
+                <p class="card-p">从健身计划到年度体检，从通勤补贴到生日惊喜。工作之外，我们照顾你的每一面。</p>
+                <div class="pill-group">
+                    <span class="pill">健康支持</span>
+                    <span class="pill">幸福礼金</span>
+                </div>
+            </div>
+
+            <!-- 卡片 3 (Purple) -->
+            <div class="clean-card c-purple">
+                <div class="card-top">
+                    <div class="icon-box">💎</div>
+                    <div class="big-number" style="font-size:32px;">Dynamic</div>
+                </div>
+                <h3 class="card-h3">成果回响 · 绝不迟到</h3>
+                <p class="card-p">Spot Bonus 即时激励。拒绝画饼，在这里，每一份卓越的产出都值得被即时看见。</p>
+                <div class="pill-group">
+                    <span class="pill">即时表彰</span>
+                    <span class="pill">长期红利</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 合作伙伴 -->
+        <div class="partner-bar">
+            <p style="color:#999; text-transform:uppercase; letter-spacing:1px; font-size:12px; margin-bottom:20px;">Premium Partners</p>
+            <div class="logos">
+                <div class="logo-item">
+                    <span class="l-icon">⚽️</span>
+                    <div class="l-text">Inter Milan</div>
+                </div>
+                <div class="logo-item">
+                    <span class="l-icon">🏎️</span>
+                    <div class="l-text">Red Bull F1</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部 -->
+        <div class="cta-container">
+            <h2 style="font-size: 36px; margin-bottom: 30px; letter-spacing:-1px;">Ready to define the future?</h2>
+            <a href="https://www.gate.io/careers" class="primary-btn">查看热招职位 & 加入我们</a>
+            <p style="margin-top: 30px; font-size: 12px; color: #999;">Gate.io Global HR Team</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

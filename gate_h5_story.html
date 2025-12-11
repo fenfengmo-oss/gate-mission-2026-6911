@@ -1,0 +1,299 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gate.io | 定义你的 Web3 时代</title>
+    <style>
+        /* --- 沉浸式暗黑主题 --- */
+        :root {
+            --bg-color: #050505;
+            --card-bg: #111111;
+            --text-main: #ffffff;
+            --text-sub: #a0a0a0;
+            --gate-blue: #0d57ff;
+            --gate-glow: #00e0ff;
+            --accent-gold: #ffd700;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.7;
+            font-size: 14px;
+            padding-bottom: 80px;
+        }
+
+        /* 顶部 Hero：视觉冲击 */
+        .header {
+            background: radial-gradient(circle at top right, #1a237e 0%, #000000 70%);
+            padding: 60px 24px 40px;
+            position: relative;
+        }
+        .logo { font-weight: 900; font-size: 24px; letter-spacing: 2px; margin-bottom: 30px; display: block; color: white;}
+        
+        .main-title {
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 1.2;
+            background: linear-gradient(90deg, #fff, #88c0fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+        
+        .sub-intro {
+            color: var(--text-sub);
+            font-size: 15px;
+            border-left: 3px solid var(--gate-blue);
+            padding-left: 15px;
+            margin-top: 20px;
+        }
+
+        /* 模块通用样式 */
+        .section { padding: 30px 24px; }
+        .section-header { margin-bottom: 25px; }
+        .section-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; color: white; }
+        .section-desc { font-size: 13px; color: var(--text-sub); }
+
+        /* 详情卡片 */
+        .detail-card {
+            background: var(--card-bg);
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        /* 装饰光效 */
+        .detail-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--gate-blue);
+        }
+
+        .highlight-num {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--gate-glow);
+            font-family: "DIN Alternate", sans-serif;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        
+        .card-heading { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #fff; }
+        
+        .text-block {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        /* 列表点 */
+        .check-list li {
+            list-style: none;
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 8px;
+            color: #bbb;
+            font-size: 13px;
+        }
+        .check-list li::before {
+            content: "✦";
+            position: absolute;
+            left: 0;
+            color: var(--gate-blue);
+        }
+
+        /* 品牌背书区 */
+        .partners {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .partner-box {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        /* 底部悬浮按钮 */
+        .float-cta {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 460px;
+            background: var(--gate-blue);
+            color: white;
+            text-align: center;
+            padding: 16px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            text-decoration: none;
+            box-shadow: 0 0 20px rgba(13, 87, 255, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+        }
+
+        /* 装饰元素 */
+        .tag-pill {
+            background: rgba(13, 87, 255, 0.15);
+            color: var(--gate-glow);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            display: inline-block;
+            margin-bottom: 10px;
+            border: 1px solid rgba(13, 87, 255, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <span class="logo">Gate.io</span>
+        <h1 class="main-title">不仅是一份工作，<br>而是 Web3 的入场券。</h1>
+        <div class="sub-intro">
+            致未来的同行者：<br>
+            在这个充满不确定性的世界里，Gate.io 提供最稀缺的两种资产：<b>顶级的行业视野</b> 与 <b>极具安全感的成长回报</b>。
+        </div>
+    </div>
+
+    <!-- 核心优势 -->
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">为什么选择 Gate.io？</h2>
+            <p class="section-desc">加入全球 Top3，站在巨人的肩膀上远眺。</p>
+        </div>
+
+        <div class="detail-card">
+            <span class="tag-pill">行业地位</span>
+            <div class="card-heading">穿越牛熊的稳健巨头</div>
+            <div class="text-block">
+                我们成立于 2013 年，是全球最早、最安全的加密货币交易平台之一。拥有超过 <b>120 亿美元</b> 的储备金（100% 保证金），服务全球 <b>2000 万+</b> 用户。
+            </div>
+            <div class="text-block" style="color:white; font-style:italic;">
+                "在这里，你不需要担心平台的寿命，只需要专注于你的才华。"
+            </div>
+        </div>
+
+        <div class="detail-card">
+            <span class="tag-pill">2026 全面焕新</span>
+            <div class="card-heading">你的价值，即时兑现</div>
+            <div class="highlight-num">Dynamic Pay</div>
+            <div class="text-block">
+                我们打破大厂“熬年头”的陈规。实行<b>“绩优调薪”</b>与<b>“即时表彰 (Spot Bonus)”</b>机制。
+            </div>
+            <ul class="check-list">
+                <li><b>成果反推回报：</b> 不看职级，只看产出，奖金当场发放。</li>
+                <li><b>中长期激励池：</b> 像合伙人一样，与行业增长红利深度绑定。</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 福利详解 -->
+    <div class="section" style="background: #0a0a0a;">
+        <div class="section-header">
+            <h2 class="section-title">全景关怀体系</h2>
+            <p class="section-desc">2026 福利升级，我们用真金白银回应热爱。</p>
+        </div>
+
+        <!-- 团建卡片 -->
+        <div class="detail-card" style="border-left: 4px solid #ff5722;">
+            <div class="card-heading">✈️ 团建：去世界，去放松</div>
+            <div class="highlight-num" style="color:#ff5722;">800 USDT <span style="font-size:14px; color:#888;">/人/年</span></div>
+            <div class="text-block">
+                告别尴尬的团建。我们赋予团队 100% 的自主权。你可以去北海道滑雪，去巴厘岛冲浪，或者去沙漠徒步。
+            </div>
+            <ul class="check-list">
+                <li><b>时间自由：</b> 支持最长 3 天，鼓励连着周末一起玩。</li>
+                <li><b>流程丝滑：</b> 支持预支经费，或个人垫付极速报销。</li>
+                <li><b>全球足迹：</b> 东京、里约、伊斯坦布尔... Gate 的旗帜插遍全球。</li>
+            </ul>
+        </div>
+
+        <!-- 津贴卡片 -->
+        <div class="detail-card" style="border-left: 4px solid #00e0ff;">
+            <div class="card-heading">🎁 津贴：滴灌生活的每一度</div>
+            <div class="highlight-num">600 USDT <span style="font-size:14px; color:#888;">/人/年</span></div>
+            <div class="text-block">
+                不仅仅是工作，我们承包你的生活品质。
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:15px;">
+                <div style="text-align:center;">
+                    <div style="color:#fff; font-weight:bold;">200U</div>
+                    <div style="font-size:10px; color:#888;">成长与健康</div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="color:#fff; font-weight:bold;">200U</div>
+                    <div style="font-size:10px; color:#888;">日常补给</div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="color:#fff; font-weight:bold;">200U</div>
+                    <div style="font-size:10px; color:#888;">幸福礼金</div>
+                </div>
+            </div>
+            <div class="text-block" style="margin-top:15px; font-size:12px; color:#888;">
+                *覆盖场景：健身卡、技术书籍、办公外设、通勤餐饮、生日婚育等。
+            </div>
+        </div>
+        
+        <!-- 安全感卡片 -->
+        <div class="detail-card" style="border-left: 4px solid #ffd700;">
+            <div class="card-heading">🛡️ 后盾：人文关怀基金</div>
+            <div class="text-block">
+                我们不希望任何一位伙伴独自面对风雨。当遭遇重大疾病或不可抗力时，Gate 特设基金将启动快速响应，定点援助，做你最坚实的依靠。
+            </div>
+        </div>
+    </div>
+
+    <!-- 酷炫背书 -->
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">与冠军同行</h2>
+            <p class="section-desc">Top 平台 x Top 合作伙伴</p>
+        </div>
+        <div class="partners">
+            <div class="partner-box">
+                <div style="font-size:12px; color:#888; margin-bottom:5px;">OFFICIAL PARTNER</div>
+                <div style="font-size:16px; font-weight:bold; color:white;">Inter Milan</div>
+                <div style="font-size:24px; margin-top:5px;">⚽️</div>
+                <div style="font-size:11px; color:#666; margin-top:5px;">国米官方袖标赞助商</div>
+            </div>
+            <div class="partner-box">
+                <div style="font-size:12px; color:#888; margin-bottom:5px;">TEAM PARTNER</div>
+                <div style="font-size:16px; font-weight:bold; color:white;">Red Bull F1</div>
+                <div style="font-size:24px; margin-top:5px;">🏎️</div>
+                <div style="font-size:11px; color:#666; margin-top:5px;">红牛车队官方合作伙伴</div>
+            </div>
+        </div>
+        <div class="text-block" style="text-align:center; margin-top:15px; font-size:12px; opacity:0.6;">
+            *加入我们，有机会获得独家联名周边及赛事门票
+        </div>
+    </div>
+
+    <div style="height: 60px;"></div>
+
+    <a href="https://www.gate.io/careers" class="float-cta">
+        立即加入 Gate.io 🚀
+    </a>
+
+</body>
+</html>

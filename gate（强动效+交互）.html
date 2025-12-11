@@ -1,0 +1,383 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gate.io | The Future is Now</title>
+    <style>
+        /* --- 1. 全局定义 --- */
+        :root {
+            --bg-color: #000205;
+            --accent-cyan: #00f2ff;
+            --accent-blue: #0d57ff;
+            --text-main: #ffffff;
+            --text-sub: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- 2. 动态星空 Canvas --- */
+        #starfield {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            opacity: 0.6;
+        }
+
+        /* --- 3. 容器布局 --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- 4. Hero 区域 --- */
+        .hero-section {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 60px;
+        }
+
+        .hero-tag {
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+            animation: slideDown 1s ease-out;
+        }
+
+        .hero-title {
+            font-size: clamp(40px, 8vw, 90px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: zoomIn 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .hero-title span {
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: clamp(16px, 2vw, 20px);
+            color: var(--text-sub);
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        /* --- 5. 数据仪表盘 --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 100px;
+            animation: slideUp 1s ease-out 0.5s backwards;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.05); }
+
+        .stat-num { font-size: 36px; font-weight: 700; color: white; display: block; margin-bottom: 5px; font-family: 'Arial', sans-serif;}
+        .stat-lbl { font-size: 14px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- 6. 核心福利 (排版调整重点) --- */
+        .section-header { margin-bottom: 50px; text-align: center; }
+        .section-title { font-size: 36px; font-weight: 700; margin-bottom: 10px; }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            width: 100%;
+        }
+
+        .spotlight-card {
+            position: relative;
+            background: rgba(20, 20, 20, 0.6);
+            border-radius: 24px;
+            padding: 30px 40px 40px; /* 调整内边距 */
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s;
+            cursor: default;
+        }
+
+        /* 光标追踪效果保持不变 */
+        .spotlight-card::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.06), transparent 40%);
+            z-index: 1; opacity: 0; transition: opacity 0.5s; pointer-events: none;
+        }
+        .spotlight-card:hover::before { opacity: 1; }
+        .spotlight-card::after {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(0, 242, 255, 0.4), transparent 40%);
+            z-index: -1; opacity: 0; transition: opacity 0.5s;
+        }
+
+        .card-content { position: relative; z-index: 2; }
+
+        /* 新增：头部组合容器 (Icon + Number) */
+        .card-header-group {
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            gap: 15px; /* 图标和数字的间距 */
+            margin-bottom: 20px;
+        }
+
+        .card-icon { font-size: 42px; line-height: 1; } /* 稍微调大一点点 */
+        
+        .highlight-data { 
+            font-size: 42px; /* 数字大小 */
+            font-weight: 800; 
+            color: var(--accent-cyan); 
+            line-height: 1;
+            font-family: 'Arial', sans-serif;
+        }
+        .highlight-data small { font-size: 16px; color: #888; font-weight: 400; margin-left: 5px; }
+
+        .card-h3 { font-size: 22px; font-weight: 700; margin-bottom: 10px; color: white; }
+        .card-p { font-size: 15px; color: var(--text-sub); line-height: 1.6; margin-bottom: 20px; min-height: 50px;}
+        
+        .tags { display: flex; gap: 10px; flex-wrap: wrap; }
+        .tag { background: rgba(255,255,255,0.1); padding: 6px 14px; border-radius: 6px; font-size: 12px; color: #ddd; }
+
+        /* --- 7. 冠军 & CTA --- */
+        .partners {
+            margin-top: 100px;
+            padding: 60px;
+            border-radius: 30px;
+            background: linear-gradient(180deg, #0a0a0a, #000);
+            border: 1px solid #222;
+            text-align: center;
+        }
+        .partner-logos { display: flex; justify-content: center; gap: 60px; margin-top: 40px; flex-wrap: wrap;}
+        .p-logo { text-align: center; opacity: 0.7; transition: 0.3s; }
+        .p-logo:hover { opacity: 1; transform: scale(1.1); }
+        .p-icon { font-size: 60px; display: block; margin-bottom: 10px; }
+        .p-name { font-size: 16px; font-weight: 700; color: white; }
+
+        .cta-wrapper { text-align: center; margin: 80px 0 100px; }
+        .glow-btn {
+            display: inline-block; padding: 20px 60px;
+            background: var(--accent-blue); color: white;
+            font-size: 20px; font-weight: 700; border-radius: 100px;
+            text-decoration: none;
+            box-shadow: 0 0 40px rgba(13, 87, 255, 0.5);
+            transition: 0.3s;
+        }
+        .glow-btn:hover { box-shadow: 0 0 80px rgba(13, 87, 255, 0.8); transform: scale(1.05); }
+
+        /* 动画关键帧 */
+        @keyframes slideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 48px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .benefits-grid { grid-template-columns: 1fr; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <canvas id="starfield"></canvas>
+
+    <div class="container">
+        
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-tag">GATE.IO RECRUITING 2026</div>
+            <h1 class="hero-title">
+                Gateway to<br><span>Your Future</span>
+            </h1>
+            <p class="hero-desc">
+                这不仅仅是一份工作，而是通往 Web3 核心的入场券。<br>
+                加入全球 Top3，掌控百亿级资产，定义未来金融。
+            </p>
+            <div class="cta-wrapper" style="margin:0;">
+                <a href="#benefits" class="glow-btn" style="padding: 15px 40px; font-size: 16px;">探索权益 ↓</a>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-num">Top 3</span>
+                <span class="stat-lbl">全球排名</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num">120亿+</span>
+                <span class="stat-lbl">储备金($)</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num">12年</span>
+                <span class="stat-lbl">安全运营</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num">2000+</span>
+                <span class="stat-lbl">全球员工</span>
+            </div>
+        </div>
+
+        <!-- Benefits Section -->
+        <div class="section-header" id="benefits">
+            <h2 class="section-title">核心人才礼遇</h2>
+            <p style="color:#666">Designed for Top Players</p>
+        </div>
+
+        <div class="benefits-grid">
+            <!-- Card 1: ✈️ + 800U -->
+            <div class="spotlight-card">
+                <div class="card-content">
+                    <div class="card-header-group">
+                        <span class="card-icon">✈️</span>
+                        <span class="highlight-data">800 U<small>/年</small></span>
+                    </div>
+                    <h3 class="card-h3">带薪畅游，世界主场</h3>
+                    <p class="card-p">团建就是去野！去东京、去巴厘岛。我们给你 100% 自主权，预算拉满。</p>
+                    <div class="tags">
+                        <span class="tag">全球探索</span>
+                        <span class="tag">自主策划</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: 🎁 + 600U -->
+            <div class="spotlight-card">
+                <div class="card-content">
+                    <div class="card-header-group">
+                        <span class="card-icon">🎁</span>
+                        <span class="highlight-data">600 U<small>/年</small></span>
+                    </div>
+                    <h3 class="card-h3">全景关怀，滴灌生活</h3>
+                    <p class="card-p">涵盖健身、体检、通勤、生日礼金。工作之外，我们照顾你的生活。</p>
+                    <div class="tags">
+                        <span class="tag">健康支持</span>
+                        <span class="tag">幸福礼金</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: 💎 + Dynamic -->
+            <div class="spotlight-card">
+                <div class="card-content">
+                    <div class="card-header-group">
+                        <span class="card-icon">💎</span>
+                        <span class="highlight-data" style="font-size: 38px;">Dynamic</span>
+                    </div>
+                    <h3 class="card-h3">成果回响，绝不迟到</h3>
+                    <p class="card-p">Spot Bonus 即时激励体系。拒绝画饼，你的每一份产出都值得即时回报。</p>
+                    <div class="tags">
+                        <span class="tag">即时表彰</span>
+                        <span class="tag">长期激励</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Partners & Footer -->
+        <div class="partners">
+            <h3 style="font-size:24px; color:white;">与冠军同行</h3>
+            <p style="color:#666; margin-top:10px;">享有顶级赛事独家特权</p>
+            <div class="partner-logos">
+                <div class="p-logo">
+                    <span class="p-icon">⚽️</span>
+                    <div class="p-name">Inter Milan</div>
+                </div>
+                <div class="p-logo">
+                    <span class="p-icon">🏎️</span>
+                    <div class="p-name">Red Bull F1</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-wrapper">
+            <h2 style="margin-bottom: 30px; font-size: 32px;">Ready to join the giant?</h2>
+            <a href="https://www.gate.io/careers" class="glow-btn">查看热招职位 & 投递简历</a>
+        </div>
+        
+        <div style="text-align:center; padding-bottom: 50px; color:#333; font-size: 12px;">
+            &copy; 2026 Gate.io Global HR Team. All rights reserved.
+        </div>
+
+    </div>
+
+    <!-- 交互脚本 -->
+    <script>
+        // 星空背景逻辑
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let stars = [];
+        function init() { resize(); createStars(); animate(); }
+        function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+        function createStars() {
+            stars = [];
+            const count = width > 768 ? 200 : 80; 
+            for(let i=0; i<count; i++) {
+                stars.push({ x: Math.random() * width, y: Math.random() * height, z: Math.random() * 2, size: Math.random() * 2 });
+            }
+        }
+        function animate() {
+            ctx.fillStyle = "#000205"; ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = "#ffffff";
+            stars.forEach(star => {
+                star.y -= star.z * 0.5;
+                if(star.y < 0) star.y = height;
+                ctx.globalAlpha = Math.random() * 0.5 + 0.5;
+                ctx.beginPath(); ctx.arc(star.x, star.y, star.size, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        window.addEventListener('resize', () => { resize(); createStars(); });
+        init();
+
+        // 光标追踪 Spotlight 逻辑
+        const cards = document.querySelectorAll('.spotlight-card');
+        document.body.addEventListener('mousemove', (e) => {
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body>
+</html>
