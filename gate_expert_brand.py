@@ -1,0 +1,385 @@
+import os
+import webbrowser
+import os.path
+
+# ==========================================
+# Gate.io 2026 最终排版修正版
+# 修正点：人才发展板块 Icon 与标题并排
+# ==========================================
+
+html_content = """
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gate.io | The Architect of Web3</title>
+    <style>
+        /* --- 1. 视觉系统 --- */
+        :root {
+            --bg-deep: #050507;
+            --bg-card: #0e0e12;
+            --brand-blue: #2962FF;
+            --brand-cyan: #00E5FF;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-tertiary: #64748b;
+            --border-light: rgba(255, 255, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif; }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-size: 15px;
+            padding-bottom: 120px;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+        /* --- 2. Hero: 品牌强露出 --- */
+        .hero { padding: 120px 0 80px; position: relative; }
+        
+        .hero-brand {
+            font-size: clamp(60px, 10vw, 100px);
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 20px;
+            color: var(--brand-blue);
+            letter-spacing: -2px;
+            font-family: 'Arial Black', sans-serif;
+            text-transform: uppercase;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .hero-slogan {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            color: white;
+            animation: fadeIn 1s ease-out 0.2s backwards;
+        }
+        
+        .hero-lead {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 680px;
+            border-left: 4px solid var(--brand-blue);
+            padding-left: 20px;
+            animation: fadeIn 1s ease-out 0.4s backwards;
+        }
+
+        /* --- 3. 信任锚点 --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border-light);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 100px;
+        }
+        @media (max-width: 600px) { .stats-grid { grid-template-columns: 1fr; } }
+
+        .stat-item { background: var(--bg-card); padding: 30px; text-align: center; }
+        .stat-item h3 { font-size: 32px; font-weight: 800; color: white; margin-bottom: 5px; }
+        .stat-item p { font-size: 12px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- 4. 模块标题 --- */
+        .section-header { margin-bottom: 40px; margin-top: 80px; }
+        .section-tag { color: var(--brand-blue); font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 10px; }
+        .section-title { font-size: 32px; font-weight: 700; color: white; }
+        .section-desc { color: var(--text-secondary); max-width: 600px; margin-top: 10px; font-size: 16px; }
+
+        /* --- 5. 人才发展 (修正重点) --- */
+        .growth-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 768px) { .growth-grid { grid-template-columns: 1fr; } }
+
+        .growth-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            padding: 32px;
+            border-radius: 16px;
+        }
+        
+        /* 修正：头部组合 (Flex Layout) */
+        .growth-header-group {
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            gap: 12px; /* 图标与文字间距 */
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .g-icon { font-size: 28px; display: block; line-height: 1; }
+        .g-title { font-size: 20px; font-weight: 700; color: white; margin: 0; line-height: 1.2; }
+        
+        /* 晋升列表 */
+        .career-path { display: flex; flex-direction: column; gap: 15px; }
+        .path-item { display: flex; gap: 12px; }
+        .check-icon { color: var(--brand-blue); font-weight: bold; font-size: 16px; margin-top: 2px;}
+        .path-content strong { color: #fff; display: block; margin-bottom: 4px; font-size: 15px;}
+        .path-content p { color: var(--text-secondary); font-size: 13px; line-height: 1.4; }
+
+        /* 培训时间轴 */
+        .academy-timeline {
+            position: relative;
+            margin-top: 10px;
+            padding-left: 20px;
+            border-left: 2px solid rgba(41, 98, 255, 0.2);
+        }
+        .academy-step { margin-bottom: 24px; position: relative; }
+        .academy-step::before {
+            content: ""; position: absolute; left: -26px; top: 6px;
+            width: 10px; height: 10px; border-radius: 50%; background: var(--brand-blue);
+            box-shadow: 0 0 10px var(--brand-blue);
+        }
+        .step-name { font-weight: 700; color: white; display: block; font-size: 15px; }
+        .step-desc { font-size: 13px; color: var(--text-tertiary); }
+
+        /* --- 6. 核心福利 (Bento) --- */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .bento-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid var(--border-light);
+            transition: transform 0.3s;
+        }
+        .bento-card:hover { border-color: var(--brand-blue); transform: translateY(-3px); }
+        .full-width { grid-column: span 2; background: linear-gradient(180deg, var(--bg-card), #0a0a0e); }
+
+        .card-header-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .c-icon { font-size: 28px; }
+        .c-num { font-size: 26px; font-weight: 800; color: var(--brand-blue); font-family: 'Inter', sans-serif; }
+        .c-num span { font-size: 13px; color: #666; font-weight: 400; margin-left: 4px; }
+        
+        .c-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: white; }
+        .c-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px; }
+        
+        .tag-box { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tag { font-size: 11px; padding: 4px 10px; background: rgba(255,255,255,0.05); color: #ccc; border-radius: 6px; }
+
+        /* --- 7. 底部 CTA --- */
+        .footer-cta {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: rgba(5,5,7,0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-top: 1px solid var(--border-light);
+            display: flex; justify-content: center; z-index: 100;
+        }
+        .apply-btn {
+            background: white; color: black; padding: 16px 50px;
+            border-radius: 100px; font-weight: 700; text-decoration: none;
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+            transition: 0.3s;
+        }
+        .apply-btn:hover { background: var(--brand-blue); color: white; }
+
+        /* 动效 */
+        @keyframes slideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Hero -->
+        <div class="hero">
+            <div class="hero-brand">Gate.io</div>
+            <h1 class="hero-slogan">
+                在周期的波动中<br>
+                构建<span style="color:#2962FF">唯一的确定性</span>
+            </h1>
+            <p class="hero-lead">
+                Web3 的下一个十年不属于投机者，而属于建设者。<br>
+                我们拥有 120亿+ 储备金与 12年 安全运营记录，为你提供穿越牛熊的职业护城河。
+            </p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>120亿+</h3>
+                <p>储备金 (100% PoR)</p>
+            </div>
+            <div class="stat-item">
+                <h3>Top 3</h3>
+                <p>全球市场份额</p>
+            </div>
+            <div class="stat-item">
+                <h3>2000+</h3>
+                <p>全球精英团队</p>
+            </div>
+        </div>
+
+        <!-- 1. 人才发展 (已修正：Icon 与标题并排) -->
+        <div class="section-header">
+            <span class="section-tag">Talent Development</span>
+            <h2 class="section-title">不设限的职业旷野</h2>
+            <p class="section-desc">我们拒绝“螺丝钉”式雇佣。在 Gate，你拥有H型双通道发展路径与全周期的赋能体系。</p>
+        </div>
+
+        <div class="growth-grid">
+            <!-- 晋升通道 -->
+            <div class="growth-card">
+                <!-- 头部并排组合 -->
+                <div class="growth-header-group">
+                    <span class="g-icon">📈</span>
+                    <h3 class="g-title">双通道·极速跃迁</h3>
+                </div>
+                
+                <div class="career-path">
+                    <div class="path-item">
+                        <div class="check-icon">✓</div>
+                        <div class="path-content">
+                            <strong>纵向晋升 (Vertical Rise)</strong>
+                            <p>每年 2 次评估窗口，打破论资排辈。能力到位，职级即刻跃升。</p>
+                        </div>
+                    </div>
+                    <div class="path-item">
+                        <div class="check-icon">✓</div>
+                        <div class="path-content">
+                            <strong>横向流动 (Internal Mobility)</strong>
+                            <p>“活水计划”畅通无阻。从运营到产品，跨界试错成本由公司承担。</p>
+                        </div>
+                    </div>
+                    <div class="path-item">
+                        <div class="check-icon">✓</div>
+                        <div class="path-content">
+                            <strong>专家/管理双轨制</strong>
+                            <p>无论志在 Tech Lead 还是 People Manager，均享顶格回报。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 培训体系 -->
+            <div class="growth-card">
+                <!-- 头部并排组合 -->
+                <div class="growth-header-group">
+                    <span class="g-icon">🎓</span>
+                    <h3 class="g-title">Gate Academy 赋能</h3>
+                </div>
+
+                <div class="academy-timeline">
+                    <div class="academy-step">
+                        <span class="step-name">Day 1 - 30: 新星启航</span>
+                        <span class="step-desc">导师 1v1 带教，加密货币通识课，文化软着陆。</span>
+                    </div>
+                    <div class="academy-step">
+                        <span class="step-name">Growth: 极客进阶</span>
+                        <span class="step-desc">Web3 前沿技术沙龙，百万级并发架构实战分享。</span>
+                    </div>
+                    <div class="academy-step">
+                        <span class="step-name">Future: 领袖计划</span>
+                        <span class="step-desc">MBA 级管理特训，全球化视野与跨文化领导力培养。</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 核心福利 (Bento 布局) -->
+        <div class="section-header" style="margin-top: 80px;">
+            <span class="section-tag">Total Rewards</span>
+            <h2 class="section-title">人才礼遇 · 顶格配置</h2>
+            <p class="section-desc">我们将福利视为对“高净值人才”的维护成本。预算无上限，只为激发你的最佳状态。</p>
+        </div>
+
+        <div class="bento-grid">
+            <!-- 800U -->
+            <div class="bento-card">
+                <div class="card-header-row">
+                    <span class="c-icon">✈️</span>
+                    <span class="c-num">800 U<span>/年</span></span>
+                </div>
+                <h3 class="c-title">带薪畅游 · 世界主场</h3>
+                <p class="c-desc">团建不是吃顿饭。去东京、去巴厘岛。我们把 100% 的自主权和顶格预算交给团队。</p>
+                <div class="tag-box">
+                    <span class="tag">全球探索</span>
+                    <span class="tag">极速报销</span>
+                </div>
+            </div>
+
+            <!-- 600U -->
+            <div class="bento-card">
+                <div class="card-header-row">
+                    <span class="c-icon">🎁</span>
+                    <span class="c-num">600 U<span>/年</span></span>
+                </div>
+                <h3 class="c-title">全景关怀 · 滴灌生活</h3>
+                <p class="c-desc">覆盖健身、体检、通勤、生日。在快节奏的行业中，我们呵护你的身心平衡。</p>
+                <div class="tag-box">
+                    <span class="tag">健康支持</span>
+                    <span class="tag">幸福礼金</span>
+                </div>
+            </div>
+
+            <!-- Dynamic Pay -->
+            <div class="bento-card full-width">
+                <div class="card-header-row">
+                    <span class="c-icon">💎</span>
+                    <span class="c-num" style="color: #fff;">Dynamic Pay</span>
+                </div>
+                <p class="c-desc" style="max-width: 90%;">
+                    我们推崇<strong>“成果即回报”</strong>。实行 <span style="color:#2962FF; font-weight:bold;">Spot Bonus (即时激励)</span> 体系，打破年终奖的滞后性。你的每一份产出，都值得被即时看见与兑现。
+                </p>
+                <div class="tag-box">
+                    <span class="tag" style="border-color:#2962FF; color:#2962FF;">即时表彰</span>
+                    <span class="tag">绩优调薪</span>
+                    <span class="tag">长期期权绑定</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 合作伙伴 -->
+        <div style="text-align:center; opacity:0.6; margin-bottom:80px; margin-top:60px;">
+            <p style="font-size:12px; letter-spacing:2px; margin-bottom:20px;">STRATEGIC PARTNERS</p>
+            <span style="font-size:24px; margin:0 20px;">⚽️ Inter Milan</span>
+            <span style="font-size:24px; margin:0 20px;">🏎️ Red Bull F1</span>
+        </div>
+
+    </div>
+
+    <div class="footer-cta">
+        <a href="https://www.gate.io/careers" class="apply-btn">探索机会 & 投递简历</a>
+    </div>
+
+</body>
+</html>
+"""
+
+def generate_final_fix():
+    filename = "gate_final_fix.html"
+    
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(html_content)
+    
+    file_path = os.path.abspath(filename)
+    print("-" * 50)
+    print(f"✅ 最终修正版已生成！")
+    print(f"📂 文件路径: {file_path}")
+    print("🚀 '人才发展'标题和图标已完美并排，所有布局已锁定")
+    print("-" * 50)
+    
+    webbrowser.open('file://' + file_path)
+
+if __name__ == "__main__":
+    generate_final_fix()
