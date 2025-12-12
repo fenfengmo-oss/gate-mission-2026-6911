@@ -1,0 +1,396 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gate.io | Gateway to Crypto</title>
+    <style>
+        /* --- 1. Gate.io Official VI System --- */
+        :root {
+            /* 官方品牌色 */
+            --gate-blue: #2962FF; 
+            --gate-dark: #0d1117; /* 官方深色背景 */
+            --gate-card: #161b22; /* 卡片背景 */
+            --gate-border: rgba(48, 54, 61, 0.8);
+            --text-main: #ffffff;
+            --text-sub: #8b949e;
+            --text-desc: #c9d1d9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+        body {
+            background-color: var(--gate-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-size: 15px;
+            padding-bottom: 100px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+
+        /* --- 2. Hero: 品牌核心 --- */
+        .hero { padding: 120px 0 80px; position: relative; border-bottom: 1px solid var(--gate-border); }
+        
+        .brand-logo {
+            font-size: 60px; font-weight: 900; color: var(--text-main); margin-bottom: 24px; display: flex; align-items: center; gap: 15px;
+        }
+        .brand-logo span { color: var(--gate-blue); } /* Logo Icon模拟 */
+
+        .hero-slogan {
+            font-size: clamp(36px, 5vw, 64px);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            background: linear-gradient(180deg, #fff 0%, #aeb5bc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 18px; color: var(--text-sub); max-width: 700px;
+            border-left: 4px solid var(--gate-blue); padding-left: 24px; margin-top: 30px;
+        }
+
+        /* --- 3. 信任数据 (Stats) --- */
+        .stats-bar {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+            background: var(--gate-border); border: 1px solid var(--gate-border);
+            border-radius: 12px; overflow: hidden; margin: 60px 0;
+        }
+        @media (max-width: 768px) { .stats-bar { grid-template-columns: 1fr 1fr; } }
+
+        .stat-box { background: var(--gate-card); padding: 30px 20px; text-align: center; transition: 0.2s; }
+        .stat-box:hover { background: #1c2128; }
+        .stat-num { font-size: 28px; font-weight: 800; color: var(--gate-blue); margin-bottom: 5px; font-family: 'Arial', sans-serif;}
+        .stat-txt { font-size: 12px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- 4. 模块通用样式 --- */
+        .section-header { margin-top: 100px; margin-bottom: 40px; }
+        .section-tag { color: var(--gate-blue); font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 12px; }
+        .section-title { font-size: 32px; font-weight: 700; color: white; margin-bottom: 16px; }
+        .section-detail { color: var(--text-sub); max-width: 800px; font-size: 16px; line-height: 1.8; }
+
+        /* --- 5. 关于我们 & 价值观 (Values) --- */
+        .values-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 30px; }
+        .value-card {
+            background: var(--gate-card); padding: 24px; border-radius: 12px; border: 1px solid var(--gate-border);
+        }
+        .v-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .v-icon { color: var(--gate-blue); font-size: 20px; }
+        .v-name { font-weight: 700; font-size: 18px; color: white; }
+        .v-text { font-size: 14px; color: var(--text-sub); line-height: 1.5; }
+
+        /* --- 6. 人才发展 (Talent - Icon/Title Inline) --- */
+        .growth-container { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        @media (max-width: 768px) { .growth-container { grid-template-columns: 1fr; } }
+
+        .growth-card {
+            background: var(--gate-card); border: 1px solid var(--gate-border); border-radius: 16px; padding: 32px;
+            transition: 0.3s;
+        }
+        .growth-card:hover { border-color: var(--gate-blue); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+
+        /* 核心修正：Flex Header */
+        .growth-header {
+            display: flex; align-items: center; gap: 15px; 
+            padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid var(--gate-border);
+        }
+        .gh-icon { font-size: 32px; line-height: 1; }
+        .gh-title { font-size: 22px; font-weight: 700; color: white; margin: 0; }
+
+        .growth-detail-list { list-style: none; }
+        .growth-detail-list li {
+            margin-bottom: 20px;
+        }
+        .growth-detail-list strong { color: var(--text-desc); font-size: 16px; display: block; margin-bottom: 6px; }
+        .growth-detail-list p { color: var(--text-sub); font-size: 14px; line-height: 1.5; }
+
+        /* 培训时间轴微件 */
+        .academy-widget { display: flex; gap: 10px; margin-top: 10px; }
+        .aw-item { flex: 1; background: rgba(41, 98, 255, 0.05); padding: 15px; border-radius: 8px; text-align: center; }
+        .aw-title { color: var(--gate-blue); font-weight: 700; font-size: 13px; display: block; margin-bottom: 4px; }
+        .aw-desc { font-size: 12px; color: var(--text-sub); }
+
+        /* --- 7. 核心福利 (Benefits - Bento + Inline) --- */
+        .bento-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .bento-card {
+            background: var(--gate-card); border-radius: 16px; padding: 30px; border: 1px solid var(--gate-border);
+            position: relative; overflow: hidden; display: flex; flex-direction: column;
+        }
+        .full-width { grid-column: span 2; background: linear-gradient(145deg, #161b22, #0d1117); }
+
+        /* 核心修正：Icon + Number Inline */
+        .benefit-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .bh-icon { font-size: 40px; line-height: 1; }
+        .bh-num { font-size: 36px; font-weight: 800; color: var(--gate-blue); font-family: 'Arial', sans-serif; letter-spacing: -1px; line-height: 1; }
+        .bh-num small { font-size: 16px; color: var(--text-sub); font-weight: 400; margin-left: 6px; }
+
+        .bh-title { font-size: 20px; font-weight: 700; color: white; margin-bottom: 10px; }
+        .bh-text { font-size: 15px; color: var(--text-sub); line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
+
+        .tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag { 
+            font-size: 12px; padding: 5px 12px; border-radius: 6px; 
+            background: rgba(255,255,255,0.05); color: #c9d1d9; border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* --- 8. 行业评价与合规 (Social Proof) --- */
+        .proof-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
+        .proof-card {
+            background: rgba(255,255,255,0.02); padding: 24px; border-radius: 12px; border: 1px solid var(--gate-border);
+        }
+        .proof-source { font-size: 13px; color: var(--gate-blue); font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
+        .proof-content { font-size: 14px; color: var(--text-desc); font-style: italic; line-height: 1.5; }
+        .proof-rating { margin-top: 10px; font-size: 12px; color: #ffd700; }
+
+        /* --- 9. 底部 CTA --- */
+        .cta-bar {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: rgba(13, 17, 23, 0.95); backdrop-filter: blur(12px);
+            padding: 20px; border-top: 1px solid var(--gate-border);
+            display: flex; justify-content: center; z-index: 100;
+        }
+        .apply-btn {
+            background: var(--gate-blue); color: white; padding: 16px 64px;
+            border-radius: 6px; /* 官方风格通常是小圆角，更显专业 */
+            font-weight: 700; font-size: 16px; text-decoration: none;
+            transition: 0.2s; box-shadow: 0 4px 20px rgba(41, 98, 255, 0.3);
+        }
+        .apply-btn:hover { background: #1c50e6; transform: translateY(-2px); }
+
+        /* 简单动效 */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.8s ease forwards; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- 1. Hero: 品牌与愿景 -->
+        <div class="hero">
+            <div class="brand-logo"><span>GATE</span>.IO</div>
+            <h1 class="hero-slogan">
+                Gateway to Crypto<br>
+                Gateway to Your Future
+            </h1>
+            <div class="hero-desc">
+                Gate.io 成立于 2013 年，是全球领先的加密货币交易平台。我们拥有 <strong>120亿+ 储备金</strong>与<strong>穿越牛熊的 12 年安全记录</strong>。加入我们，在 Web3 的核心构建确定的未来。
+            </div>
+        </div>
+
+        <!-- 2. 信任数据 -->
+        <div class="stats-bar fade-in">
+            <div class="stat-box">
+                <div class="stat-num">TOP 3</div>
+                <div class="stat-txt">全球市场份额</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-num">120亿+</div>
+                <div class="stat-txt">储备金 (100% PoR)</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-num">4600万+</div>
+                <div class="stat-txt">全球注册用户</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-num">4100+</div>
+                <div class="stat-txt">上线币种数量</div>
+            </div>
+        </div>
+
+        <!-- 3. 关于我们与价值观 -->
+        <div class="section-header fade-in">
+            <span class="section-tag">About Us</span>
+            <h2 class="section-title">价值观驱动的极客团队</h2>
+            <p class="section-detail">
+                我们不仅是一家交易所，更是一个拥有 Gate Chain、Gate Ventures、Gate Web3 等全景生态的科技集团。我们的文化以“One Gate”为核心，倡导扁平、透明与协作。
+            </p>
+        </div>
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="v-head"><span class="v-icon">💡</span><span class="v-name">创新 (Innovation)</span></div>
+                <p class="v-text">重构概念，以找出解决之道。挑战成见，保持产品服务的敏捷。</p>
+            </div>
+            <div class="value-card">
+                <div class="v-head"><span class="v-icon">🤝</span><span class="v-name">合作 (Cooperation)</span></div>
+                <p class="v-text">以共赢思维看待问题，主动分享信息，营造良性行业生态。</p>
+            </div>
+            <div class="value-card">
+                <div class="v-head"><span class="v-icon">👁️</span><span class="v-name">洞察 (Insight)</span></div>
+                <p class="v-text">明辨用户需求，洞察行业异动，始终走在市场前沿。</p>
+            </div>
+            <div class="value-card">
+                <div class="v-head"><span class="v-icon">⚖️</span><span class="v-name">正直 (Integrity)</span></div>
+                <p class="v-text">明辨是非，坚守底线，言行一致，信守承诺。</p>
+            </div>
+        </div>
+
+        <!-- 4. 人才发展 (详细展开版) -->
+        <div class="section-header">
+            <span class="section-tag">Talent Growth</span>
+            <h2 class="section-title">不设限的职业旷野</h2>
+            <p class="section-detail">
+                我们拒绝“螺丝钉”式雇佣。Gate 为你提供清晰的晋升路径与全周期的赋能体系，你的成长速度只取决于你的野心。
+            </p>
+        </div>
+
+        <div class="growth-container">
+            <!-- 晋升通道 -->
+            <div class="growth-card">
+                <div class="growth-header">
+                    <span class="gh-icon">📈</span>
+                    <h3 class="gh-title">H型双通道发展</h3>
+                </div>
+                <ul class="growth-detail-list">
+                    <li>
+                        <strong>纵向晋升 (Vertical Rise)</strong>
+                        <p>每年设立 2 次评估窗口。我们打破论资排辈的陈规，实行“能力匹配薪资”逻辑，业绩达标即可快速兑现职级跃升。</p>
+                    </li>
+                    <li>
+                        <strong>横向流动 (Internal Mobility)</strong>
+                        <p>推行“活水计划”。鼓励跨部门（如运营转产品）、跨项目（如交易所转 Web3）流动，跨界试错成本由公司承担。</p>
+                    </li>
+                    <li>
+                        <strong>管理/专家双轨制</strong>
+                        <p>无论你致力于成为 Tech Lead (技术专家) 还是 People Manager (团队管理者)，均享有同等量级的薪酬回报与尊重。</p>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 培训体系 -->
+            <div class="growth-card">
+                <div class="growth-header">
+                    <span class="gh-icon">🎓</span>
+                    <h3 class="gh-title">Gate Academy 赋能</h3>
+                </div>
+                <ul class="growth-detail-list">
+                    <li>
+                        <strong>全周期培养计划</strong>
+                        <p>从入职第一天起，我们为你提供定制化的学习资源。涵盖加密货币通识、前沿技术沙龙及管理领导力课程。</p>
+                    </li>
+                </ul>
+                <div class="academy-widget">
+                    <div class="aw-item">
+                        <span class="aw-title">新星启航</span>
+                        <span class="aw-desc">导师1v1带教<br>文化软着陆</span>
+                    </div>
+                    <div class="aw-item">
+                        <span class="aw-title">极客进阶</span>
+                        <span class="aw-desc">Web3技术沙龙<br>专项技能提升</span>
+                    </div>
+                    <div class="aw-item">
+                        <span class="aw-title">领袖计划</span>
+                        <span class="aw-desc">MBA级特训<br>全球视野</span>
+                    </div>
+                </div>
+                <p style="margin-top:20px; font-size:13px; color:#666;">* 支持 Token2049 等全球顶级大会公费参会学习。</p>
+            </div>
+        </div>
+
+        <!-- 5. 核心福利 (Bento 布局 + 详细描述) -->
+        <div class="section-header">
+            <span class="section-tag">Total Rewards</span>
+            <h2 class="section-title">人才礼遇 · 顶格配置</h2>
+            <p class="section-detail">
+                我们将福利视为对“高净值人才”的维护成本。预算无上限，只为激发你的最佳状态。
+            </p>
+        </div>
+
+        <div class="bento-grid">
+            <!-- 800U -->
+            <div class="bento-card">
+                <div class="benefit-header">
+                    <span class="bh-icon">✈️</span>
+                    <span class="bh-num">800 U<small>/年</small></span>
+                </div>
+                <h3 class="bh-title">带薪畅游 · 世界主场</h3>
+                <p class="bh-text">
+                    团建不是形式主义的聚餐。我们赋予团队 100% 的自主权与顶格预算。你可以去东京见证 Web3 繁荣，或去巴厘岛寻找灵感。
+                </p>
+                <div class="tag-row">
+                    <span class="tag">全球目的地</span>
+                    <span class="tag">自主策划</span>
+                    <span class="tag">极速报销</span>
+                </div>
+            </div>
+
+            <!-- 600U -->
+            <div class="bento-card">
+                <div class="benefit-header">
+                    <span class="bh-icon">🎁</span>
+                    <span class="bh-num">600 U<small>/年</small></span>
+                </div>
+                <h3 class="bh-title">全景关怀 · 滴灌生活</h3>
+                <p class="bh-text">
+                    覆盖你生活的方方面面：200U 成长与健康支持（健身/体检）、200U 日常暖心补给（通勤/餐饮）、200U 生日与幸福时刻礼金。
+                </p>
+                <div class="tag-row">
+                    <span class="tag">健康支持</span>
+                    <span class="tag">生活补给</span>
+                    <span class="tag">幸福礼金</span>
+                </div>
+            </div>
+
+            <!-- Dynamic Pay -->
+            <div class="bento-card full-width">
+                <div class="benefit-header">
+                    <span class="bh-icon">💎</span>
+                    <span class="bh-num" style="color:white;">Dynamic Pay 动态激励</span>
+                </div>
+                <p class="bh-text" style="max-width: 90%;">
+                    我们推崇<strong>“成果即回报”</strong>。实行 <span style="color:var(--gate-blue); font-weight:bold;">Spot Bonus (即时激励)</span> 体系，打破传统年终奖的滞后性。你的每一份卓越产出，都值得被即时看见与兑现。此外，我们提供极具行业竞争力的薪酬体系与中长期期权激励。
+                </p>
+                <div class="tag-row">
+                    <span class="tag" style="border-color:var(--gate-blue); color:var(--gate-blue);">即时表彰</span>
+                    <span class="tag">绩优调薪</span>
+                    <span class="tag">长期绑定</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. 权威背书 (Reviews) -->
+        <div class="section-header">
+            <span class="section-tag">Social Proof</span>
+            <h2 class="section-title">权威背书，行业共识</h2>
+        </div>
+        <div class="proof-grid">
+            <div class="proof-card">
+                <div class="proof-source">Forbes Advisor</div>
+                <p class="proof-content">"Gate.io 入选全球最佳交易所。拥有令人印象深刻的资产种类（4100+）和强大的安全功能，是专业投资者的首选。"</p>
+                <div class="proof-rating">★★★★★ Best for Altcoins</div>
+            </div>
+            <div class="proof-card">
+                <div class="proof-source">CER.live (Security)</div>
+                <p class="proof-content">"Gate.io 荣获 CER 顶级网络安全认证 (Tier 1)。在 Proof of Reserves 实施方面树立了行业透明度标杆。"</p>
+                <div class="proof-rating">Security Score: AAA</div>
+            </div>
+            <div class="proof-card">
+                <div class="proof-source">Hacken Audit</div>
+                <p class="proof-content">"核心智能合约与平台架构均通过顶级安全审计，拥有行业领先的防御机制与零知识证明技术。"</p>
+                <div class="proof-rating">Passed 100%</div>
+            </div>
+        </div>
+
+        <!-- 7. 合作伙伴 -->
+        <div style="text-align:center; padding: 80px 0; border-top: 1px solid var(--gate-border); margin-top: 80px;">
+            <p style="font-size:12px; letter-spacing:2px; margin-bottom:20px; color:var(--text-sub);">GLOBAL STRATEGIC PARTNERS</p>
+            <div style="font-size:24px; color:white; display:flex; justify-content:center; gap:40px;">
+                <span>⚽️ Inter Milan</span>
+                <span>🏎️ Red Bull F1</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-bar">
+        <a href="https://www.gate.io/careers" class="apply-btn">探索机会 & 投递简历</a>
+    </div>
+
+</body>
+</html>
